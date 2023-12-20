@@ -12,6 +12,7 @@ import ddf.minim.ugens.*;
 File musicFolder, soundEffectFolder; //Class for java.io.* library
 Minim minim; //creates object to access all functions
 int numberOfSongs = 1, numberOfSoundEffects = 1; //Placeholder Only, reexecute lines after fileCount Known
+int currentSong=0; //Variable is rewritten in setup
 AudioPlayer[] playList = new AudioPlayer[numberOfSongs]; //song is now similar to song1
 AudioMetaData[] playListMetaData = new AudioMetaData[numberOfSongs]; //same as above
 AudioPlayer[] soundEffects = new AudioPlayer[numberOfSoundEffects]; //song is now similar to song1PFont generalFont;
@@ -32,8 +33,9 @@ void setup() {
     songFilePathway[i] = ( musicFiles[i].toString() );
   }
   //Re-execute Playlist Population, similar to DIV Population
-  int numberOfSongs = musicFileCount; //Placeholder Only, reexecute lines after fileCount Known
+  numberOfSongs = musicFileCount; //Placeholder Only, reexecute lines after fileCount Known
   playList = new AudioPlayer[numberOfSongs]; //song is now similar to song1
+  printArray(playList);
   playListMetaData = new AudioMetaData[numberOfSongs]; //same as above
   for ( int i=0; i<musicFileCount; i++ ) {
     playList[i]= minim.loadFile( songFilePathway[i] );
@@ -60,7 +62,10 @@ void setup() {
   minim = new Minim(this); //load from data directory, loadFile should also load from project folder, like loadImage
   //
   generalFont = createFont ("Harrington", 55); //Must also Tools / Create Font / Find Font / Do Not Press "OK"
-  playList[0].play();
+  //Random Start witha any song in playList
+  currrentSong = int ( random(0, numberOfSongs-1) ); //casting truncates(rids of) the decimal
+  //println("Random Start", currentSong);
+  playList[currentSong].play();
 } //End setup
 //
 void draw() {
@@ -82,9 +87,57 @@ void draw() {
   textFont(generalFont, size); //Change the number until it fits, largest font size
   text(playListMetaData[0].title(), width*1/4, height*0, width*1/2, height*3/10);
   fill(255); //Reset to white for rest of the program
+  //
+  //Random STart with ant song in the playList
+  
+  //Play, next song automatically plays
+  //ERROR: AutoPlay breaks the STOP, there is never a song not playing
+  //ERROR: AutoPlay will break at the end of the playList
+  if ( playList[currrentSong].IsPlaying() ) { 
+    //Empty if TRUE 
+  } else {
+    //currentSong at the end of FILE
+    playList[currentSong].rewind()
+    currentSong = currentSong + 1; //currentSong++; , currentSong+=1
+    //Random here, not +1, is called SHUFFLE
+    //This SHUFFLE randomized the folder. not what has already been played
+    playList[currentSong].play();
+  }
+  //
 } //End draw
 //
 void keyPressed() {
+  if ( soundEffects[2].position()!=0 ) soundEffects[2].rewind();
+  soundEffects[2].play();
+  //
+  if ( key=='P' || key=='p' ) {
+    delay( soundEffects[2].length() ); //parameter in millisecond
+    playList[currentSong].play(); //Parameter is milli-seconds from start of audio file to start playing (illustrate with examples)
+    //.play() includes .rewind()??
+  }
+  //
+  //Simple STOP Behaviour: ask if .playing() & .pause() & .rewind(), or .rewind()
+  /*if ( key=='S' | key=='s' ) {
+    if ( playList[currentSong].isPlaying() ) {
+      playList[currentSong].pause(); //auto .rewind()
+    } else {
+      playList[currentSong].rewind(); //Not Necessary
+    }
+  }
+  //Simple NEXT and PREVIOUS BUTTONS
+  if ( key==CODED && keyCode==LEFT ) { //Previous
+    if ( .isPlaying() ) {
+      pause();
+      .rewind();
+      currentSong = currentSong - 1; // currentSong--; currentSong-=1
+      .plauy();
+    } else {
+      
+    }
+  } //End Previous
+  if ( key==CODED && keyCode==RIGHT ) { //NEXT
+    
+  } //End NEXT
   /* Broken KeyBinds
   if ( key=='P' || key=='p' ) song[0].play(); //Parameter is milli-seconds from start of audio file to start playing (illustrate with examples)
   //.play() includes .rewind()
