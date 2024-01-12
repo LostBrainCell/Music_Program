@@ -10,13 +10,14 @@ import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 //
 //Global Variables
-File musicFolder, soundEffectFolder; //Class for java.io.* library
+//File musicFolder, soundEffectFolder; //Class for java.io.* library
 Minim minim; //creates object to access all functions
-int numberOfSongs = 1, numberOfSoundEffects = 1; //Placeholder Only, reexecute lines after fileCount Known
-int currentSong=0; //Variable is rewritten in setup()
+int numberOfSongs = 3, numberOfSoundEffects = 1; //Placeholder Only, reexecute lines after fileCount Known
+//int currentSong=0; //Variable is rewritten in setup()
 AudioPlayer[] playList = new AudioPlayer[numberOfSongs]; //song is now similar to song1
-AudioMetaData[] playListMetaData = new AudioMetaData[numberOfSongs]; //same as above
-AudioPlayer[] soundEffects = new AudioPlayer[numberOfSoundEffects]; //song is now similar to song1PFont generalFont;
+int currentSong = numberOfSongs -  numberOfSongs + int (random(numberOfSongs)); //shuffle song thing
+//AudioMetaData[] playListMetaData = new AudioMetaData[numberOfSongs]; //same as above
+//AudioPlayer[] soundEffects = new AudioPlayer[numberOfSoundEffects]; //song is now similar to song1PFont generalFont;
 color purple = #2C08FF;
 PFont generalFont;
 Boolean stopBoolean=false, pauseBoolean=false, changeState=false;
